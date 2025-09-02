@@ -31,40 +31,8 @@ public class TaskService {
 
         	// Agrego ~30 más
         	taskRepository.save(new Task("Preparar la presentación", false, LocalDate.now().plusDays(2)));
-        	taskRepository.save(new Task("Enviar correo al profesor", false, LocalDate.now().plusDays(1)));
-        	taskRepository.save(new Task("Hacer la compra semanal", false, LocalDate.now().plusDays(5)));
-        	taskRepository.save(new Task("Limpiar la casa", false, LocalDate.now().plusDays(4)));
-        	taskRepository.save(new Task("Organizar apuntes de clase", false, LocalDate.now().plusDays(2)));
 
-        	taskRepository.save(new Task("Pagar facturas", false, LocalDate.now().plusDays(3)));
-        	taskRepository.save(new Task("Revisar código del proyecto", false, LocalDate.now().plusDays(1)));
-        	taskRepository.save(new Task("Escribir en el diario", false, LocalDate.now()));
-        	taskRepository.save(new Task("Practicar guitarra", false, LocalDate.now().plusDays(6)));
-        	taskRepository.save(new Task("Revisar estado del coche", false, LocalDate.now().plusDays(10)));
 
-        	taskRepository.save(new Task("Preparar examen de matemáticas", false, LocalDate.now().plusDays(7)));
-        	taskRepository.save(new Task("Ordenar escritorio", false, LocalDate.now().plusDays(2)));
-        	taskRepository.save(new Task("Regar las plantas", false, LocalDate.now().plusDays(1)));
-        	taskRepository.save(new Task("Configurar entorno de desarrollo", false, LocalDate.now().plusDays(3)));
-        	taskRepository.save(new Task("Planear el fin de semana", false, LocalDate.now().plusDays(4)));
-
-        	taskRepository.save(new Task("Estudiar patrones de diseño", false, LocalDate.now().plusDays(5)));
-        	taskRepository.save(new Task("Ver tutorial de Docker", false, LocalDate.now().plusDays(2)));
-        	taskRepository.save(new Task("Ir al médico", false, LocalDate.now().plusDays(8)));
-        	taskRepository.save(new Task("Sacar dinero del cajero", false, LocalDate.now().plusDays(1)));
-        	taskRepository.save(new Task("Hacer copia de seguridad", false, LocalDate.now().plusDays(3)));
-
-        	taskRepository.save(new Task("Preparar currículum", false, LocalDate.now().plusDays(6)));
-        	taskRepository.save(new Task("Revisar LinkedIn", false, LocalDate.now().plusDays(2)));
-        	taskRepository.save(new Task("Comprar regalo de cumpleaños", false, LocalDate.now().plusDays(9)));
-        	taskRepository.save(new Task("Ver película pendiente", false, LocalDate.now().plusDays(4)));
-        	taskRepository.save(new Task("Practicar inglés", false, LocalDate.now().plusDays(2)));
-
-        	taskRepository.save(new Task("Revisar apuntes de estructuras de datos", false, LocalDate.now().plusDays(5)));
-        	taskRepository.save(new Task("Actualizar sistema operativo", false, LocalDate.now().plusDays(7)));
-        	taskRepository.save(new Task("Cocinar algo nuevo", false, LocalDate.now().plusDays(3)));
-        	taskRepository.save(new Task("Preparar lista de compras", false, LocalDate.now().plusDays(1)));
-        	taskRepository.save(new Task("Escribir una carta", false, LocalDate.now().plusDays(2)));
 
         }
     }

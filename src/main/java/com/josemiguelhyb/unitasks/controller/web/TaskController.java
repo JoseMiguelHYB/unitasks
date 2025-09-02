@@ -18,6 +18,12 @@ public class TaskController {
         this.taskService = taskService;
     }
 
+    @GetMapping("/")
+    public String welcome() {
+    		return "index";
+    }    
+    
+    
     @GetMapping("/tasks")
     public String home(Model model) {
         // Insertamos tareas iniciales si no existen
@@ -27,7 +33,7 @@ public class TaskController {
         model.addAttribute("message", "Tareas cargadas desde la BD con éxito");
         model.addAttribute("tasks", taskService.getAllTasks());
 
-        return "index";
+        return "tasks";
     }
     
     @PostMapping("/tasks/{id}/toggle")

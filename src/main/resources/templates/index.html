@@ -1,200 +1,97 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<html lang="es">
 
 <head>
-	<meta charset="UTF-8">
-	<title>Lista de Tareas</title>
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-	<style>
-		/* Tarjetas */
-		.task-card {
-			border: 2px solid #dee2e6;
-			border-radius: 12px;
-			box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
-			transition: transform 0.2s, border-color 0.2s;
-			margin-bottom: 1rem;
+    <meta charset="UTF-8">
+    <title>UniTasks - Bienvenido</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #89f7fe, #66a6ff);
+            color: #333;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            margin: 0;
+        }
+
+        .hero {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 3rem 4rem;
+            border-radius: 25px;
+            box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.15);
+            max-width: 750px;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+
+        h1 span {
+            color: #007bff;
+        }
+
+        p {
+            font-size: 1.2rem;
+            margin: 1.5rem 0 2rem;
+            color: #555;
+        }
+
+		.btn-start {
+		    font-size: 1.2rem;
+		    padding: 0.9rem 2.5rem;
+		    border-radius: 50px;
+		    background: #007bff;   /* Azul sólido Bootstrap */
+		    color: #fff;
+		    font-weight: 600;
+		    text-decoration: none;
+		    display: inline-block;
+		    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
 		}
 
-		.task-card:hover {
-			transform: scale(1.02);
-			border-color: #adb5bd;
+		.btn-start:hover {
+		    background: #0056b3;   /* Azul más oscuro al pasar el mouse */
+		    transform: scale(1.07);
+		    box-shadow: 0px 6px 20px rgba(0, 123, 255, 0.5);
 		}
 
-		/* Estados */
-		.task-completed {
-			background-color: #e6f9e6; /* verde claro */
-		}
 
-		.task-pending {
-			background-color: #f5f5f5; /* gris claro */
-		}
+        footer {
+            position: absolute;
+            bottom: 20px;
+            font-size: 0.95rem;
+            color: #f8f9fa;
+        }
 
-		/* Botón añadir */
-		.btn-add {
-			width: 70px;
-			height: 70px;
-			font-size: 2rem;
-			background: linear-gradient(135deg, #007bff, #0056b3);
-			color: white;
-			border: none;
-			border-radius: 50%;
-			box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-			transition: background-color 0.2s;
-		}
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
 
-		.btn-add:hover {
-			background-color: #004080;
-		}
-
-		/* Vista lista */
-		.list-view .task-card {
-			display: flex;
-			align-items: center;
-			padding: 0.5rem;
-		}
-
-		.list-view .task-card .card-body {
-			flex: 1;
-			display: flex;
-			justify-content: space-between;
-			align-items: center;
-		}
-	</style>
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
 </head>
 
-<body class="container mt-4">
+<body>
+    <div class="hero">
+        <h1>🚀 Bienvenido a <span>UniTasks</span></h1>
+        <p>Organiza tu día, cumple tus metas y lleva el control de tus tareas de forma sencilla y elegante.</p>
+		<a href="/tasks" class="btn-start">✨ Comenzar ahora</a>    </div>
 
-	<!-- Mensaje flash -->
-	<div th:if="${message}" class="alert alert-success alert-dismissible fade show" role="alert">
-		<span th:text="${message}"></span>
-		<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-	</div>
-
-	<!-- Cabecera -->
-	<div class="d-flex justify-content-between align-items-center mb-4">
-		<h1 class="mb-0">📋 Mis Tareas</h1>
-		<div>
-			<button class="btn btn-outline-primary me-2" id="btnGrid">🔲 Grid</button>
-			<button class="btn btn-outline-secondary" id="btnList">📋 Lista</button>
-			<button type="button" class="btn-add ms-2" data-bs-toggle="modal" data-bs-target="#addTaskModal">+</button>
-		</div>
-	</div>
-
-	<!-- Lista de tareas -->
-	<div id="tasksContainer" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-		<div class="col" th:each="task : ${tasks}">
-			<div class="card task-card h-100"
-				th:classappend="${task.completed} ? ' task-completed' : ' task-pending'">
-				<div class="card-body d-flex flex-column justify-content-between">
-					<div>
-						<h5 class="card-title fw-bold"
-							th:classappend="${task.completed} ? 'text-decoration-line-through text-success' : ''"
-							th:text="${task.title}">Título</h5>
-						<p class="card-text text-muted">
-							Fecha límite: <span th:text="${#temporals.format(task.dueDate, 'dd/MM/yyyy')}"></span>
-						</p>
-					</div>
-					<div class="d-flex justify-content-between align-items-center mt-3">
-						<!-- Toggle -->
-						<form th:action="@{/tasks/{id}/toggle(id=${task.id})}" method="post">
-							<button type="submit" class="btn btn-sm"
-								th:classappend="${task.completed} ? 'btn-success' : 'btn-danger'">
-								<span th:text="${task.completed} ? '✔ Completada' : '✘ Pendiente'"></span>
-							</button>
-						</form>
-						<div class="d-flex gap-2">
-							<!-- Editar -->
-							<button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal"
-								th:attr="data-bs-target='#editTaskModal-' + ${task.id}">
-								✏️
-							</button>
-							<!-- Eliminar -->
-							<form th:action="@{/tasks/delete/{id}(id=${task.id})}" method="post"
-								onsubmit="return confirm('¿Seguro que quieres eliminar esta tarea?')">
-								<button type="submit" class="btn btn-sm btn-outline-danger">🗑️</button>
-							</form>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<!-- Modal añadir tarea -->
-	<div class="modal fade" id="addTaskModal" tabindex="-1" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<form th:action="@{/tasks/add}" method="post">
-					<div class="modal-header">
-						<h5 class="modal-title">➕ Nueva tarea</h5>
-						<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-					</div>
-					<div class="modal-body">
-						<div class="mb-3">
-							<label for="title" class="form-label">Título</label>
-							<input type="text" class="form-control" id="title" name="title" required>
-						</div>
-						<div class="mb-3">
-							<label for="dueDate" class="form-label">Fecha límite</label>
-							<input type="date" class="form-control" id="dueDate" name="dueDate" required>
-						</div>
-					</div>
-					<div class="modal-footer">
-						<button type="submit" class="btn btn-success">Guardar</button>
-						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
-
-	<!-- Modal editar tarea -->
-	<div th:each="task : ${tasks}">
-		<div class="modal fade" th:id="'editTaskModal-' + ${task.id}" tabindex="-1" aria-hidden="true">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<form th:action="@{/tasks/edit/{id}(id=${task.id})}" method="post">
-						<div class="modal-header">
-							<h5 class="modal-title">✏️ Editar tarea</h5>
-							<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-						</div>
-						<div class="modal-body">
-							<div class="mb-3">
-								<label class="form-label">Título</label>
-								<input type="text" class="form-control" name="title" th:value="${task.title}" required>
-							</div>
-							<div class="mb-3">
-								<label class="form-label">Fecha límite</label>
-								<input type="date" class="form-control" name="dueDate" th:value="${task.dueDate}" required>
-							</div>
-						</div>
-						<div class="modal-footer">
-							<button type="submit" class="btn btn-primary">Guardar cambios</button>
-							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-						</div>
-					</form>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<!-- Script para cambiar de vista -->
-	<script>
-		const btnGrid = document.getElementById('btnGrid');
-		const btnList = document.getElementById('btnList');
-		const tasksContainer = document.getElementById('tasksContainer');
-
-		btnGrid.addEventListener('click', () => {
-			tasksContainer.classList.remove('list-view');
-			tasksContainer.classList.add('row', 'row-cols-1', 'row-cols-md-2', 'row-cols-lg-3', 'g-4');
-		});
-
-		btnList.addEventListener('click', () => {
-			tasksContainer.classList.add('list-view');
-			tasksContainer.classList.remove('row', 'row-cols-1', 'row-cols-md-2', 'row-cols-lg-3', 'g-4');
-		});
-	</script>
-
+    <footer>
+        <p>UniTasks © 2025 - Tu gestor de tareas inteligente ✨</p>
+    </footer>
 </body>
+
 </html>
